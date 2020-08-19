@@ -56,7 +56,7 @@ def start1(PlayerIG):
         pass
     elif option == "4":
         exit()
-    else
+    else:
         start1(PlayerIG)
         
 def fight():
