@@ -1,8 +1,8 @@
 import sys
 import os
 import random
-
-weapons = {"Great Sword":40}
+import swords
+import enemies
 
 class Player:
     def __init__(self, name):
@@ -10,10 +10,10 @@ class Player:
         self.maxhealth = 100
         self.health = self.maxhealth
         self.base_attack = 10
-        self.gold = 25
-        self.pots = 1
-        self.weap = ["Rusty Sword"]
-        self.curweap = ["Rusty Sword"]
+        self.gold = 0
+        self.pots = 0
+        self.weap = []
+        self.curweap = []
         
     @property
     def attack(self):
@@ -24,26 +24,13 @@ class Player:
         if self.curweap == "Great Sword":
             attack += 15
             
+        if self.curweap == "Lightning Sword":
+            attack += 25
+                
+        if self.curweap == "Ultima Weapon":
+            attack += 50
+            
         return attack
-
-
-class Goblin:
-    def __init__(self, name):
-        self.name = name
-        self.maxhealth = 50
-        self.health = self.maxhealth
-        self.attack = 5
-        self.goldgain = 10     
-GoblinIG = Goblin("Goblin")
-
-class Zombie:
-    def __init__(self, name):
-        self.name = name
-        self.maxhealth = 70
-        self.health = self.maxhealth
-        self.attack = 7
-        self.goldgain = 15     
-ZombieIG = Zombie("Zombie")
 
 def main():
     os.system('cls')
@@ -130,9 +117,9 @@ def prefight():
     global enemy
     enemynum = random.randint(1, 2)
     if enemynum == 1:
-        enemy = GoblinIG
+        enemy = enemies.GoblinIG
     else:
-        enemy = ZombieIG
+        enemy = enemies.ZombieIG
     fight()
 
 def fight():
@@ -224,7 +211,7 @@ def flee():
         print("You have failed to flee!")
         input("")
         os.system('cls')
-        eAttack = random.randint(enemy.attack / 2, enemy.attack)
+        eAttack = random.randint(int(enemy.attack / 2), enemy.attack)
         if eAttack == enemy.attack / 2:
             print(f"{enemy.name} missed!")
         else:
@@ -237,17 +224,20 @@ def flee():
 
 def store():
     os.system('cls')
-    print("Welcome to the shop! \n What would you like to buy?")
-    print("1. Great Sword 50g")
+    print("Welcome to the shop! \nWhat would you like to buy?")
+    input("")
+    os.system('cls')
+    for item in swords.weapons:
+        print (f"{item}, {swords.weapons[item]}G")
     print("b. Leave")
     print ("")
     option = input("->")
     if option == "b":
         start1()
-    if option in weapons:
-        if PlayerIG.gold >= weapons[option]:
+    if option in swords.weapons:
+        if PlayerIG.gold >= swords.weapons[option]:
             os.system('cls')
-            PlayerIG.gold -= weapons[option]
+            PlayerIG.gold -= swords.weapons[option]
             PlayerIG.weap.append(option)
             print(f"Purchased {option}!")
             input("")
