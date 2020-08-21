@@ -25,7 +25,7 @@ class Player:
             attack += 15
             
         return attack
-        
+
 
 class Goblin:
     def __init__(self, name):
@@ -44,25 +44,21 @@ class Zombie:
         self.attack = 7
         self.goldgain = 15     
 ZombieIG = Zombie("Zombie")
-        
+
 def main():
     os.system('cls')
     print ("Welcome to my game!\n")
     print ("1. Start")
-    print ("2. Load")
-    print ("3. Exit")
+    print ("2. Exit")
     option = input("-> ")
     if option == "1":
         start()
     elif option == "2":
-        #load()
-        pass
-    elif option == "3":
         exit()
     else:
         print("Invalid selection! Please try again")
         main()
-        
+
 def start():
     global PlayerIG
     os.system('cls')
@@ -70,7 +66,7 @@ def start():
     option = input("-->")
     PlayerIG = Player(option)
     start1()
-    
+
 def start1():
     os.system('cls')
     print(f"Hello, how are you {PlayerIG.name}?")
@@ -81,27 +77,54 @@ def start1():
     print(f"Health: {PlayerIG.health}/{PlayerIG.maxhealth}")
     print("1. Fight")
     print("2. Store")
-    print("3. Save")
-    print("4. Inventory")
-    print("5. Exit")
+    print("3. Inventory")
+    print("4. Exit")
     option = input("--->")
     if option == "1":
         prefight()
     elif option == "2":
         store()
-        pass
     elif option == "3":
-        #save()
-        pass
-    elif option == "4":
         inventory()
-    elif option == "5":
+    elif option == "4":
         exit()
     else:
         start1()
 
 def inventory():
-    pass
+    os.system('cls')
+    print("What do you want to do?")
+    print("1. Equip Weapon")
+    print ("b. Go back")
+    option = input(">>>")
+    if option == "1":
+        equip()
+    elif option == "b":
+        start1()
+    else:
+        inventory()
+
+def equip():
+    os.system('cls')
+    print("What do you want to equip?")
+    for weapon in PlayerIG.weap:
+        print (weapon)
+    print("b to go back")
+    option = input(">>> ")
+    if option == PlayerIG.curweap:
+        print ("You alread have that weapon equipped!")
+        input("")
+        equip()
+    elif option == "b":
+        inventory()
+    elif option in PlayerIG.weap:
+        PlayerIG.curweap = option
+        print (f"You have equipped {option}!")
+        input("")
+        equip()
+    else:
+        print (f"You don't have {option} in your inventory!")
+        equip()
 
 def prefight():
     global enemy
@@ -111,7 +134,7 @@ def prefight():
     else:
         enemy = ZombieIG
     fight()
-        
+
 def fight():
     os.system('cls')
     print(f"{PlayerIG.name} vs {enemy.name}")
@@ -129,7 +152,7 @@ def fight():
         flee()
     else:
         fight()
-        
+
 def attack():
     os.system('cls')
     pAttack = random.randint(int(PlayerIG.attack / 2), PlayerIG.attack)
@@ -160,7 +183,7 @@ def attack():
         lose()
     else:
         fight()
-        
+
 def win():
     enemy.health = enemy.maxhealth
     PlayerIG.gold += enemy.goldgain
@@ -216,13 +239,11 @@ def store():
     os.system('cls')
     print("Welcome to the shop! \n What would you like to buy?")
     print("1. Great Sword 50g")
-    print("Leave")
+    print("b. Leave")
     print ("")
     option = input("->")
-    
-    if option == "Leave":
+    if option == "b":
         start1()
-    
     if option in weapons:
         if PlayerIG.gold >= weapons[option]:
             os.system('cls')
@@ -241,7 +262,4 @@ def store():
         print("This item does not exist!")
         input("")
         store()
-    
-    
-    
 main()
