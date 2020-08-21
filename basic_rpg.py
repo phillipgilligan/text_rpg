@@ -2,14 +2,30 @@ import sys
 import os
 import random
 
+weapons = {"Great Sword":40}
+
 class Player:
     def __init__(self, name):
         self.name = name
         self.maxhealth = 100
         self.health = self.maxhealth
-        self.attack = 10
-        self.gold = 0
-        self.pots = 0
+        self.base_attack = 10
+        self.gold = 25
+        self.pots = 1
+        self.weap = ["Rusty Sword"]
+        self.curweap = ["Rusty Sword"]
+        
+    @property
+    def attack(self):
+        attack = self.base_attack
+        if self.curweap == "Rusty Sword":
+            attack += 5
+            
+        if self.curweap == "Great Sword":
+            attack += 15
+            
+        return attack
+        
 
 class Goblin:
     def __init__(self, name):
@@ -38,7 +54,6 @@ def main():
     option = input("-> ")
     if option == "1":
         start()
-        pass
     elif option == "2":
         #load()
         pass
@@ -61,16 +76,17 @@ def start1():
     print(f"Hello, how are you {PlayerIG.name}?")
     print(f"Attack: {PlayerIG.attack}")
     print(f"Gold: {PlayerIG.gold}")
+    print(f"Weapons: {PlayerIG.curweap}")
     print(f"Potions: {PlayerIG.pots}")
     print(f"Health: {PlayerIG.health}/{PlayerIG.maxhealth}")
     print("1. Fight")
     print("2. Store")
     print("3. Save")
-    print("4. Exit")
+    print("4. Inventory")
+    print("5. Exit")
     option = input("--->")
     if option == "1":
         prefight()
-        pass
     elif option == "2":
         store()
         pass
@@ -78,9 +94,14 @@ def start1():
         #save()
         pass
     elif option == "4":
+        inventory()
+    elif option == "5":
         exit()
     else:
         start1()
+
+def inventory():
+    pass
 
 def prefight():
     global enemy
@@ -111,8 +132,10 @@ def fight():
         
 def attack():
     os.system('cls')
-    pAttack = random.randint(PlayerIG.attack / 2, PlayerIG.attack)
-    eAttack = random.randint(enemy.attack / 2, enemy.attack)
+    pAttack = random.randint(int(PlayerIG.attack / 2), PlayerIG.attack)
+    eAttack = random.randint(int(enemy.attack / 2), enemy.attack)
+    # #pAttack = random.randint(1, 10)
+    # #eAttack = random.randint(1, 10)
     
     if pAttack == PlayerIG.attack / 2:
         print("You miss!")
@@ -139,27 +162,86 @@ def attack():
         fight()
         
 def win():
-    pass
+    enemy.health = enemy.maxhealth
+    PlayerIG.gold += enemy.goldgain
+    print(f"You have defeated the {enemy.name}!")
+    print(f"You have gained {enemy.goldgain} gold!")
+    input("")
+    start1()
 
 def lose():
-    pass
+    enemy.health = enemy.maxhealth
+    print ("You have Died!")
+    input("")   
+    start()
 
 def drinkpot():
     os.system('cls')
     if PlayerIG.pots == 0:
         print("You don't have any potions!")
-        input('')
-        fight()
     else:
-        PlayerIG.health +- 50
-        #! <- This is where I left off ->
-        #if
-        print ("You drank a potion")
+        PlayerIG.health += 50
+        PlayerIG.pots -= 1
+        if PlayerIG.health > PlayerIG.maxhealth:
+            PlayerIG.health = PlayerIG.maxhealth
+            print("You are now at max health!")
+        else:
+            print ("You drank a potion!")
+    input('')
+    fight()
 
 def flee():
-    pass
+    os.system('cls')
+    runnum = random.randint(1, 3)
+    if runnum == 3:
+        print("You have fleed!")
+        input("")
+        start1()
+    else:
+        print("You have failed to flee!")
+        input("")
+        os.system('cls')
+        eAttack = random.randint(enemy.attack / 2, enemy.attack)
+        if eAttack == enemy.attack / 2:
+            print(f"{enemy.name} missed!")
+        else:
+            PlayerIG.health -= eAttack
+            print(f"{enemy.name} did {eAttack} damages!")
+        if PlayerIG.health <=0:
+            lose()
+        else:
+            fight()
 
 def store():
-    pass
+    os.system('cls')
+    print("Welcome to the shop! \n What would you like to buy?")
+    print("1. Great Sword 50g")
+    print("Leave")
+    print ("")
+    option = input("->")
+    
+    if option == "Leave":
+        start1()
+    
+    if option in weapons:
+        if PlayerIG.gold >= weapons[option]:
+            os.system('cls')
+            PlayerIG.gold -= weapons[option]
+            PlayerIG.weap.append(option)
+            print(f"Purchased {option}!")
+            input("")
+            store()
+        else:
+            os.system('cls')
+            print ("You don't have enough gold!")
+        input("")
+        store()
+    else:
+        os.system('cls')
+        print("This item does not exist!")
+        input("")
+        store()
+    
+    
     
 main()
