@@ -1,8 +1,10 @@
 import sys
 import os
 import random
-import swords
+import shopinventory
 import enemies
+from rich import print as rprint
+from rich.panel import Panel
 
 class Player:
     def __init__(self, name):
@@ -224,20 +226,93 @@ def flee():
 
 def store():
     os.system('cls')
-    print("Welcome to the shop! \nWhat would you like to buy?")
+    print("Welcome to the shop! \nWhat would you like?")
+    print("1. Swords")
+    print("2. Armor")
+    print("3. Items")
+    print("b. Back")
+    option = input("->")
+    if option == "1":
+        buysword()
+    elif option == "2":
+        buyarmor()
+    elif option == "3":
+        buyitems()
+    else:
+        store()
+    
+def buysword():   
     input("")
     os.system('cls')
-    for item in swords.weapons:
-        print (f"{item}, {swords.weapons[item]}G")
+    for item in shopinventory.sword:
+        print (f"{item}, {shopinventory.sword[item]}G")
     print("b. Leave")
     print ("")
     option = input("->")
     if option == "b":
         start1()
-    if option in swords.weapons:
-        if PlayerIG.gold >= swords.weapons[option]:
+    if option in shopinventory.sword:
+        if PlayerIG.gold >= shopinventory.sword[option]:
             os.system('cls')
-            PlayerIG.gold -= swords.weapons[option]
+            PlayerIG.gold -= shopinventory.sword[option]
+            PlayerIG.weap.append(option)
+            print(f"Purchased {option}!")
+            input("")
+            store()
+        else:
+            os.system('cls')
+            print ("You don't have enough gold!")
+        input("")
+        store()
+    else:
+        os.system('cls')
+        print("This item does not exist!")
+        input("")
+        store()
+        
+def buyarmor():   
+    input("")
+    os.system('cls')
+    for item in shopinventory.armor:
+        print (f"{item}, {shopinventory.armor[item]}G")
+    print("b. Leave")
+    print ("")
+    option = input("->")
+    if option == "b":
+        start1()
+    if option in shopinventory.armor:
+        if PlayerIG.gold >= shopinventory.armor[option]:
+            os.system('cls')
+            PlayerIG.gold -= shopinventory.armor[option]
+            PlayerIG.weap.append(option)
+            print(f"Purchased {option}!")
+            input("")
+            store()
+        else:
+            os.system('cls')
+            print ("You don't have enough gold!")
+        input("")
+        store()
+    else:
+        os.system('cls')
+        print("This item does not exist!")
+        input("")
+        store()
+        
+def buyitems():   
+    input("")
+    os.system('cls')
+    for item in shopinventory.items:
+        print (f"{item}, {shopinventory.items[item]}G")
+    print("b. Leave")
+    print ("")
+    option = input("->")
+    if option == "b":
+        start1()
+    if option in shopinventory.items:
+        if PlayerIG.gold >= shopinventory.items[option]:
+            os.system('cls')
+            PlayerIG.gold -= shopinventory.items[option]
             PlayerIG.weap.append(option)
             print(f"Purchased {option}!")
             input("")

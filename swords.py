@@ -1,1 +1,0 @@
-weapons = {"Rusty Sword":10, "Great Sword":20, "Lightning Sword":30, "Ultima Weapon":50}
