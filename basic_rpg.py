@@ -109,8 +109,13 @@ def attack():
     if eAttack == enemy.attack / 2:
         print(f"{enemy.name} missed!")
     else:
-        PlayerIG.health -= eAttack
-        print(f"{enemy.name} did {eAttack} damages!")
+        if eAttack <= PlayerIG.defense:
+            print(f"{enemy.name} did 0 damage!")
+        else:
+            hit = PlayerIG.defense - eAttack
+            print (hit)
+            PlayerIG.health -= hit
+            print(f"{enemy.name} did {eAttack} damages!")
     input('')
     os.system('cls')
     
@@ -286,16 +291,19 @@ def inventory():
     print(f"Armor: {PlayerIG.curarmor}")
     print("What do you want to do?")
     print("1. Equip Weapon")
+    print("2. Equip Armor")
     print ("b. Go back")
     option = input(">>>")
     if option == "1":
-        equip()
+        equipweap()
+    if option == "2":
+        equiparmor()
     elif option == "b":
         start1()
     else:
         inventory()
 
-def equip():
+def equipweap():
     os.system('cls')
     print("What do you want to equip?")
     for weapon in PlayerIG.weap:
@@ -305,17 +313,39 @@ def equip():
     if option == PlayerIG.curweap:
         print ("You alread have that weapon equipped!")
         input("")
-        equip()
+        equipweap()
     elif option == "b":
         inventory()
     elif option in PlayerIG.weap:
         PlayerIG.curweap = option
         print (f"You have equipped {option}!")
         input("")
-        equip()
+        equipweap()
     else:
         print (f"You don't have {option} in your inventory!")
-        equip()
+        equipweap()
+        
+def equiparmor():
+    os.system('cls')
+    print("What do you want to equip?")
+    for armor in PlayerIG.armor:
+        print (armor)
+    print("b to go back")
+    option = input(">>> ")
+    if option == PlayerIG.curarmor:
+        print ("You alread have that armor equipped!")
+        input("")
+        equiparmor()
+    elif option == "b":
+        inventory()
+    elif option in PlayerIG.armor:
+        PlayerIG.curarmor = option
+        print (f"You have equipped {option}!")
+        input("")
+        equiparmor()
+    else:
+        print (f"You don't have {option} in your inventory!")
+        equiparmor()
 
 #!#################################################################################################
 #!                               Main Function                                                    #

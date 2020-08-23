@@ -34,25 +34,26 @@ class Player:
             attack += 30
 
         return attack
+    
     @property
     def defense(self):
         defense = self.base_defense
-        if self.curweap == "Leather Armor":
+        if self.curarmor == "Leather Armor":
             defense += 5
 
-        if self.curweap == "Copper Armor":
+        if self.curarmor == "Copper Armor":
             defense += 10
 
-        if self.curweap == "Iron Armor":
+        if self.curarmor == "Iron Armor":
             defense += 15
 
-        if self.curweap == "Bronze Armor":
+        if self.curarmor == "Bronze Armor":
             defense += 20
 
-        if self.curweap == "Steel Armor":
+        if self.curarmor == "Steel Armor":
             defense += 25
         
-        if self.curweap == "Diamond Armor":
+        if self.curarmor == "Diamond Armor":
             defense += 30
 
         return defense
